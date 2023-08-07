@@ -1,3 +1,5 @@
 *.list
 *.pdf
 temp.html
+secrets.env
+go.work.sum
