@@ -8,7 +8,6 @@ require (
 )
 
 require (
-	github.com/SebastiaanKlippert/go-wkhtmltopdf v1.9.0 // indirect
 	github.com/andybalholm/brotli v1.0.5 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/klauspost/compress v1.16.3 // indirect
