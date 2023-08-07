@@ -20,18 +20,24 @@ type reqData struct {
 	Data []string `json:"data"`
 }
 
-func check(e error) {
-	if e != nil {
-		panic(e)
+func getLines(filename string) ([]string, error) {
+	data, err := os.ReadFile(filename)
+	sdata := string(data)
+	allLines := strings.Split(sdata, "\n")
+	var lines []string
+
+	for _, line := range allLines {
+		if !strings.HasPrefix(line, "#") && len(line) > 0 { // skip empty lines and comments
+			lines = append(lines, line)
+		}
 	}
+
+	return lines, err
 }
 
 func getTasks(c *fiber.Ctx) error {
-	data, err0 := os.ReadFile("tasks.list")
-	sdata := string(data)
-
-	tasks := strings.Split(sdata, "\n")
-
+	tasks, err0 := getLines("tasks.list")
+	log.Info(tasks)
 	err1 := c.JSON(&response{Message: "success",
 		Data: tasks})
 
@@ -44,10 +50,7 @@ func getTasks(c *fiber.Ctx) error {
 }
 
 func getReminders(c *fiber.Ctx) error {
-	data, err0 := os.ReadFile("reminders.list")
-	sdata := string(data)
-
-	rems := strings.Split(sdata, "\n")
+	rems, err0 := getLines("reminders.list")
 
 	err1 := c.JSON(&response{Message: "success",
 		Data: rems})
@@ -67,8 +70,7 @@ func addTasks(c *fiber.Ctx) error {
 
 	err0 := dec.Decode(&data)
 
-	tasksf, _ := os.ReadFile("tasks.list")
-	tasks := strings.Split(string(tasksf), "\n")
+	tasks, _ := getLines("tasks.list")
 
 	f, err1 := os.OpenFile("tasks.list", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
 	if err1 != nil {
@@ -98,8 +100,7 @@ func addReminders(c *fiber.Ctx) error {
 
 	err0 := dec.Decode(&data)
 
-	remsf, err1 := os.ReadFile("reminders.list")
-	rems := strings.Split(string(remsf), "\n")
+	rems, _ := getLines("reminders.list")
 
 	f, err1 := os.OpenFile("reminders.list", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
 	if err1 != nil {
@@ -129,10 +130,13 @@ func delTasks(c *fiber.Ctx) error {
 
 	err0 := dec.Decode(&data)
 
-	tasksf, err1 := os.ReadFile("tasks.list")
+	tasksf, _ := os.ReadFile("tasks.list")
 	tasks := strings.Split(string(tasksf), "\n")
 
 	f, err1 := os.Create("tasks.list")
+	if err1 != nil {
+		log.Error(err1)
+	}
 	defer f.Close()
 
 	for i, t := range tasks {
@@ -162,10 +166,13 @@ func delReminders(c *fiber.Ctx) error {
 
 	err0 := dec.Decode(&data)
 
-	remsf, err1 := os.ReadFile("reminders.list")
+	remsf, _ := os.ReadFile("reminders.list")
 	rems := strings.Split(string(remsf), "\n")
 
 	f, err1 := os.Create("reminders.list")
+	if err1 != nil {
+		log.Error(err1)
+	}
 	defer f.Close()
 
 	for i, t := range rems {
