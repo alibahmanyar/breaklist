@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <style>
+        ul, ol {
+            padding: 0;
+            margin-left: 1em;
+        }
+    </style>
+</head>
+<body>
+    <!-- <h1>Tasks:</h1> -->
+    <ol>
+        {{range .Tasks}} <li>{{.}}</li> {{end}}	
+    </ol>
+    
+</body>
+</html>
