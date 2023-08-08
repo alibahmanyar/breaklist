@@ -8,6 +8,8 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
+	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/gofiber/fiber/v2/middleware/helmet"
 	"golang.org/x/exp/slices"
 )
 
@@ -37,7 +39,7 @@ func getLines(filename string) ([]string, error) {
 
 func getTasks(c *fiber.Ctx) error {
 	tasks, err0 := getLines("tasks.list")
-	log.Info(tasks)
+
 	err1 := c.JSON(&response{Message: "success",
 		Data: tasks})
 
@@ -202,7 +204,9 @@ func main() {
 	f2.Close()
 
 	app := fiber.New()
-	log.Debug("start")
+
+	app.Use(helmet.New())
+	app.Use(cors.New())
 
 	app.Get("/task", getTasks)
 	app.Get("/reminder", getReminders)
