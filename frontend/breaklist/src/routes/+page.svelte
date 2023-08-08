@@ -19,12 +19,12 @@
 	function toggleDarkMode() {
 		darkMode = !darkMode;
 
-		if (darkMode) window.document.body.classList.add('dark-mode');
-		else window.document.body.classList.remove('dark-mode');
+		if (darkMode) window.document.body.classList.remove('light-mode');
+		else window.document.body.classList.add('light-mode');
 	}
 </script>
 
-<button id="darkModeBtn" on:click={toggleDarkMode}>
+<button class="sbtn" id="darkModeBtn" on:click={toggleDarkMode}>
 	{#if darkMode}
 		<span class="material-icons" style="color:beige;">light_mode</span>
 	{:else}
@@ -32,10 +32,37 @@
 	{/if}
 </button>
 
-<div class="container">
-	<div class="c1">
-		<h1>Tasks:</h1>
-		{#if state === 1}
+<div class="container font1">
+		<h1 >Tasks:</h1>
+
+		<div class="vbox">
+			<div class="task">
+				Task 1
+				<button class="sbtn">
+					<span class="material-icons" style="">close</span>
+				</button>
+				
+			</div>
+
+			<div class="task">
+				Task 1
+				<button class="sbtn">
+					<span class="material-icons" style="">close</span>
+				</button>
+				
+			</div>
+
+			<div class="task">
+				Task 1
+				<button class="sbtn">
+					<span class="material-icons" style="">close</span>
+				</button>
+				
+			</div>
+
+
+		</div>
+		<!-- {#if state === 1}
 			<ol>
 				{#each tasks as t}
 					<li>{t}</li>
@@ -48,44 +75,89 @@
 					<div />
 				</div>
 			</div>
-		{/if}
-	</div>
+		{/if} -->
 </div>
 
 <style>
 	@import url('https://fonts.googleapis.com/css2?family=Victor+Mono:wght@300;400&display=swap');
 
-	.c1 {
-		/* margin-left: 10%; */
-		text-align: left;
+	.font1{
 		font-family: 'Victor Mono', monospace;
 	}
 
-	:global(body) {
-		background-color: beige;
-		color: hsl(215, 68%, 7%);
-		transition: background-color 0.3s;
+	.vbox{
+		display: flex;
+		flex-direction: column;
 	}
-	:global(body.dark-mode) {
+	
+
+	.task{
+		padding: 0 5px 0 10px;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		flex-grow: 1;
+		height: 50px;
+		margin-top: 2px;
+		margin-bottom: 2px;
+
+	}
+
+	.task:nth-child(even){
+		transition: background-color 0.3s;
+		background-color: hsl(215, 58%, 25%);
+	}
+	.task:nth-child(odd){
+		transition: background-color 0.3s;
+		background-color: hsl(215, 58%, 15%);
+	}
+
+
+	:global(body.light-mode .task:nth-child(even)){
+		background-color: hsl(55, 50%, 85%);
+	}
+	:global(body.light-mode .task:nth-child(odd)){
+		background-color: hsl(55, 40%, 80%);
+	}
+
+	:global(html, body){
+		height: 100%;
+	}
+
+	:global(body) {
 		background-color: hsl(215, 68%, 7%);
 		color: hsl(0, 0%, 98%);
+		transition: background-color 0.3s;
+	}
+	:global(body.light-mode) {
+		background-color: beige;
+		color: hsl(215, 68%, 7%);
 	}
 
 	.container {
 		margin: 5px;
 		position: relative;
 		height: 100%;
-		text-align: center;
+		text-align: left;
 	}
 
-	#darkModeBtn {
+	.sbtn{
 		overflow: hidden;
 		border: none;
 		text-align: center;
 		text-decoration: none;
 		background-color: rgba(0, 0, 0, 0);
 		padding: 0;
+		color: beige;
+	}
 
+	:global(body.light-mode .sbtn) {
+		color: black;
+	}
+
+
+	#darkModeBtn {
 		position: absolute;
 		right: 15px;
 		top: 15px;
@@ -118,7 +190,7 @@
 	}
 	.lds-ripple div {
 		position: absolute;
-		border: 4px solid rgb(27, 27, 27);
+		border: 4px solid rgb(231, 231, 231);
 		opacity: 1;
 		border-radius: 50%;
 		animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
@@ -157,8 +229,8 @@
 		}
 	}
 
-	body.dark-mode .lds-ripple div {
-		border: 4px solid rgb(231, 231, 231);
+	body.light-mode .lds-ripple div {
+		border: 4px solid rgb(27, 27, 27);
 	}
 	/* loader */
 </style>
