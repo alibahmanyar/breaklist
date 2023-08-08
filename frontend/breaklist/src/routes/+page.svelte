@@ -97,19 +97,23 @@
 
 	<div class="vbox">
 		{#if state === 1}
-			{#each tasks as t}
-				<div class="task hbox0">
-					{t}
-					<button
-						class="sbtn"
-						on:click={() => {
-							delTask(t);
-						}}
-					>
-						<span class="material-icons" style="">close</span>
-					</button>
-				</div>
-			{/each}
+			{#if tasks !== null}
+				{#each tasks as t}
+					<div class="task hbox0">
+						{t}
+						<button
+							class="sbtn"
+							on:click={() => {
+								delTask(t);
+							}}
+						>
+							<span class="material-icons" style="">close</span>
+						</button>
+					</div>
+				{/each}
+			{:else}
+				No tasks left!
+			{/if}
 		{:else if state === 0}
 			<div style="text-align: center">
 				<div class="lds-ripple">
