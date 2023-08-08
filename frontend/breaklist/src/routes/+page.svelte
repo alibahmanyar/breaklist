@@ -5,6 +5,8 @@
 	let darkMode = true;
 	let tasks = [''];
 	let state = 0; // 0 -> loading / 1-> done loading
+	let newTask = '';
+	let addTaskPopUp = false;
 
 	async function updateTasks() {
 		state = 0;
@@ -15,14 +17,60 @@
 		state = 1;
 	}
 	onMount(updateTasks);
+	onMount(() => {
+		darkMode = JSON.parse(document.cookie).darkMode;
+		if (darkMode) window.document.body.classList.remove('light-mode');
+		else window.document.body.classList.add('light-mode');
+	});
 
 	function toggleDarkMode() {
 		darkMode = !darkMode;
 
+		document.cookie = JSON.stringify({ darkMode: darkMode });
+
 		if (darkMode) window.document.body.classList.remove('light-mode');
 		else window.document.body.classList.add('light-mode');
 	}
+
+	async function delTask(task: string) {
+		console.log(task);
+
+		let response = await fetch(API_URL + 'task', {
+			method: 'DELETE',
+			body: JSON.stringify({ data: [task] })
+		});
+		let result = await response.json();
+
+		updateTasks();
+	}
+
+	async function addTask() {
+		console.log(newTask);
+		addTaskPopUp = false;
+
+		let response = await fetch(API_URL + 'task', {
+			method: 'POST',
+			body: JSON.stringify({ data: [newTask] })
+		});
+		let result = await response.json();
+
+		updateTasks();
+
+		newTask = '';
+	}
 </script>
+
+{#if addTaskPopUp}
+	<div class="popup">
+		<form on:submit={addTask}>
+			<div class="vbox font1" id="pp0">
+				<div>Add New task:</div>
+				<input type="text" style="width: 80%; height: 2vh;" bind:value={newTask} />
+				<button class="sbtn" id="pp0_btn" type="submit">Add</button>
+			</div>
+		</form>
+	</div>
+{/if}
 
 <button class="sbtn" id="darkModeBtn" on:click={toggleDarkMode}>
 	{#if darkMode}
@@ -33,41 +81,35 @@
 </button>
 
 <div class="container font1">
-		<h1 >Tasks:</h1>
-
-		<div class="vbox">
-			<div class="task">
-				Task 1
-				<button class="sbtn">
-					<span class="material-icons" style="">close</span>
-				</button>
-				
-			</div>
-
-			<div class="task">
-				Task 1
-				<button class="sbtn">
-					<span class="material-icons" style="">close</span>
-				</button>
-				
-			</div>
-
-			<div class="task">
-				Task 1
-				<button class="sbtn">
-					<span class="material-icons" style="">close</span>
-				</button>
-				
-			</div>
-
-
+	<h1 id="hd1">
+		<div class="hbox0">
+			Tasks:
+			<button
+				class="sbtn"
+				on:click={() => {
+					addTaskPopUp = true;
+				}}
+			>
+				<span class="material-icons" style="font-size: 2.5rem; padding-top:5px">add</span>
+			</button>
 		</div>
-		<!-- {#if state === 1}
-			<ol>
-				{#each tasks as t}
-					<li>{t}</li>
-				{/each}
-			</ol>
+	</h1>
+
+	<div class="vbox">
+		{#if state === 1}
+			{#each tasks as t}
+				<div class="task hbox0">
+					{t}
+					<button
+						class="sbtn"
+						on:click={() => {
+							delTask(t);
+						}}
+					>
+						<span class="material-icons" style="">close</span>
+					</button>
+				</div>
+			{/each}
 		{:else if state === 0}
 			<div style="text-align: center">
 				<div class="lds-ripple">
@@ -75,53 +117,93 @@
 					<div />
 				</div>
 			</div>
-		{/if} -->
+		{/if}
+	</div>
 </div>
 
 <style>
 	@import url('https://fonts.googleapis.com/css2?family=Victor+Mono:wght@300;400&display=swap');
 
-	.font1{
+	.font1 {
 		font-family: 'Victor Mono', monospace;
 	}
 
-	.vbox{
+	.vbox {
 		display: flex;
 		flex-direction: column;
 	}
-	
 
-	.task{
-		padding: 0 5px 0 10px;
+	.hbox0 {
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
 		align-items: center;
+	}
+
+	.task {
+		padding: 0 5px 0 10px;
 		flex-grow: 1;
 		height: 50px;
 		margin-top: 2px;
 		margin-bottom: 2px;
-
 	}
 
-	.task:nth-child(even){
+	.task:nth-child(even) {
 		transition: background-color 0.3s;
 		background-color: hsl(215, 58%, 25%);
 	}
-	.task:nth-child(odd){
+	.task:nth-child(odd) {
 		transition: background-color 0.3s;
 		background-color: hsl(215, 58%, 15%);
 	}
-
-
-	:global(body.light-mode .task:nth-child(even)){
-		background-color: hsl(55, 50%, 85%);
+	:global(body.light-mode .task:nth-child(even)) {
+		background-color: hsl(55, 50%, 85%) !important;
 	}
-	:global(body.light-mode .task:nth-child(odd)){
-		background-color: hsl(55, 40%, 80%);
+	:global(body.light-mode .task:nth-child(odd)) {
+		background-color: hsl(55, 40%, 80%) !important;
 	}
 
-	:global(html, body){
+	.popup {
+		position: fixed;
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: 100%;
+		background-color: rgba(0, 0, 0, 0.5);
+		z-index: 1;
+	}
+	#pp0 {
+		align-self: center;
+		margin: auto;
+		margin-top: 50%;
+		height: fit-content;
+		width: 85%;
+		padding: 20px;
+		align-items: center;
+
+		gap: 10px;
+
+		background-color: rgba(53, 53, 53, 0.5);
+	}
+
+	:global(body.light-mode #pp0) {
+		background-color: rgba(255, 255, 255, 0.5) !important;
+	}
+
+	#pp0_btn {
+		margin-top: 20px;
+		font-size: 1.2rem;
+		border-color: gray;
+		border-width: 1px;
+
+		border: 2px solid;
+		padding: 5px 40px 5px 40px;
+	}
+	#pp0_btn:active {
+		color: gray;
+	}
+
+	:global(html, body) {
 		height: 100%;
 	}
 
@@ -142,7 +224,7 @@
 		text-align: left;
 	}
 
-	.sbtn{
+	.sbtn {
 		overflow: hidden;
 		border: none;
 		text-align: center;
@@ -153,14 +235,21 @@
 	}
 
 	:global(body.light-mode .sbtn) {
-		color: black;
+		color: black !important;
 	}
 
+	.sbtn:active {
+		color: gray;
+	}
 
 	#darkModeBtn {
 		position: absolute;
 		right: 15px;
 		top: 15px;
+	}
+
+	#hd1 {
+		margin-top: 15%;
 	}
 
 	@media only screen and (min-width: 768px) {
@@ -176,6 +265,15 @@
 			height: 100%;
 			margin: 1%;
 			overflow: hidden;
+		}
+
+		#hd1 {
+			margin-top: 8%;
+		}
+
+		#pp0 {
+			margin-top: 20%;
+			width: 50%;
 		}
 	}
 
