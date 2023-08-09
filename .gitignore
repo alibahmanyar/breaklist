@@ -4,3 +4,4 @@ temp.html
 .env
 go.work.sum
 tmp/
+.vscode
