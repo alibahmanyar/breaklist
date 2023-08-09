@@ -27,7 +27,7 @@ for f in files:
 
     a = cv2.bitwise_not(a)
 
-    a = cv2.resize(a, (384, int(a.shape[0] * (384/a.shape[1]))))
+    #a = cv2.resize(a, (384, int(a.shape[0] * (384/a.shape[1]))))
 
     b = a
     if rt:
