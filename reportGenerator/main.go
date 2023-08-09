@@ -23,6 +23,14 @@ func check(e error) {
 	}
 }
 
+// getLines reads the contents of a file, filters out empty lines and lines starting with "#" (comments),
+// and returns a slice containing the non-comment lines.
+//
+// Parameters:
+// filename string - The name of the file to be read.
+//
+// Returns:
+// []string - A slice containing non-comment lines from the file.
 func getLines(filename string) ([]string, error) {
 	data, err := os.ReadFile(filename)
 	sdata := string(data)

@@ -37,6 +37,12 @@ type intervals []struct {
 	} `json:"values"`
 }
 
+// FetchWeatherData fetches weather forecast data from the Tomorrow.io API for a specified location and time range.
+// The weather data includes temperature, weather code, and apparent temperature.
+//
+// Note:
+// - Make sure the environment variables TOMORROW_API_KEY, LOCATION, and TIMEZONE are set before calling this function.
+// - The returned weatherInterval intervals will be in the specified timezone.
 func getWeatherForecast() intervals {
 	url := fmt.Sprintf("https://api.tomorrow.io/v4/timelines?apikey=%s", os.Getenv("TOMORROW_API_KEY"))
 
