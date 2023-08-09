@@ -1,12 +1,13 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+    import { fade, blur, slide } from "svelte/transition";
 
 	const API_URL = 'http://localhost:3000/';
 	let darkMode = true;
 	let tasks = [''];
 	let state = 0; // 0 -> loading / 1-> done loading
-	let newTask = '';
-	let addTaskPopUp = false;
+	let newTask = '', taskToDelete = '';
+	let addTaskPopUp = false, delTaskPopUp = false;
 
 	async function updateTasks() {
 		state = 0;
@@ -22,6 +23,10 @@
 		if (darkMode) window.document.body.classList.remove('light-mode');
 		else window.document.body.classList.add('light-mode');
 	});
+
+	function init(el: any){
+    	el.focus()
+  	}
 
 	function toggleDarkMode() {
 		darkMode = !darkMode;
@@ -61,16 +66,41 @@
 </script>
 
 {#if addTaskPopUp}
-	<div class="popup">
+	<div class="popup" transition:blur>
 		<form on:submit={addTask}>
 			<div class="vbox font1" id="pp0">
 				<div>Add New task:</div>
-				<input type="text" style="width: 80%; height: 2vh;" bind:value={newTask} />
-				<button class="sbtn" id="pp0_btn" type="submit">Add</button>
+				<input type="text" style="width: 80%; height: 2vh;" bind:value={newTask} use:init/>
+
+
+				<div style="display: flex; flex-direction: row;">
+					<button class="pp_btn" on:click={() => {addTaskPopUp = false; newTask = '';}} type="reset">Back</button>
+					<span style="padding-left: 10px; padding-right: 10px;"></span>
+					<button class="pp_btn" type="submit">Add task</button>
+				</div>
+				
 			</div>
 		</form>
 	</div>
 {/if}
+
+{#if delTaskPopUp}
+	<div class="popup" transition:blur>
+		<form on:submit={() => {delTask(taskToDelete); delTaskPopUp=false;}}>
+			<div class="vbox font1" id="pp0">
+				<div>Delete {taskToDelete}?</div>
+				
+				<div style="display: flex; flex-direction: row;">
+					<button class="pp_btn" on:click={() => {delTaskPopUp = false;}} type="reset">Back</button>
+					<span style="padding-left: 10px; padding-right: 10px;"></span>
+					<button class="pp_btn" type="submit">Delete task</button>
+				</div>
+				
+			</div>
+		</form>
+	</div>
+{/if}
+
 
 <button class="sbtn" id="darkModeBtn" on:click={toggleDarkMode}>
 	{#if darkMode}
@@ -88,6 +118,7 @@
 				class="sbtn"
 				on:click={() => {
 					addTaskPopUp = true;
+
 				}}
 			>
 				<span class="material-icons" style="font-size: 2.5rem; padding-top:5px">add</span>
@@ -104,7 +135,9 @@
 						<button
 							class="sbtn"
 							on:click={() => {
-								delTask(t);
+								// delTask(t);
+								taskToDelete = t;
+								delTaskPopUp = true;
 							}}
 						>
 							<span class="material-icons" style="">close</span>
@@ -160,11 +193,11 @@
 		transition: background-color 0.3s;
 		background-color: hsl(215, 58%, 15%);
 	}
-	:global(body.light-mode .task:nth-child(even)) {
-		background-color: hsl(55, 50%, 85%) !important;
+	:global(body.light-mode) .task:nth-child(even) {
+		background-color: hsl(55, 50%, 85%);
 	}
-	:global(body.light-mode .task:nth-child(odd)) {
-		background-color: hsl(55, 40%, 80%) !important;
+	:global(body.light-mode) .task:nth-child(odd) {
+		background-color: hsl(55, 40%, 80%);
 	}
 
 	.popup {
@@ -190,22 +223,11 @@
 		background-color: rgba(53, 53, 53, 0.5);
 	}
 
-	:global(body.light-mode #pp0) {
-		background-color: rgba(255, 255, 255, 0.5) !important;
+	:global(body.light-mode) #pp0 {
+		background-color: rgba(255, 255, 255, 0.5);
 	}
 
-	#pp0_btn {
-		margin-top: 20px;
-		font-size: 1.2rem;
-		border-color: gray;
-		border-width: 1px;
-
-		border: 2px solid;
-		padding: 5px 40px 5px 40px;
-	}
-	#pp0_btn:active {
-		color: gray;
-	}
+	
 
 	:global(html, body) {
 		height: 100%;
@@ -238,11 +260,24 @@
 		color: beige;
 	}
 
-	:global(body.light-mode .sbtn) {
-		color: black !important;
+	:global(body.light-mode) .sbtn {
+		color: black;
 	}
 
 	.sbtn:active {
+		color: gray;
+	}
+
+	.pp_btn {
+		margin-top: 20px;
+		font-size: 1.2rem;
+		border-color: gray;
+		border-width: 1px;
+		background-color: rgba(0, 0, 0, 0);
+		border: 2px solid;
+		padding: 5px 40px 5px 40px;
+	}
+	.pp_btn:active {
 		color: gray;
 	}
 
