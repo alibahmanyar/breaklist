@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"sort"
+	"strconv"
 	"time"
 
 	"github.com/gocolly/colly"
@@ -9,12 +11,12 @@ import (
 
 // Hacker News' article
 type hnArticle struct {
-	title   string
-	summary string
-	link    string
-	rank    int
-	votes   int
-	time    string
+	Title   string
+	Summary string
+	Link    string
+	Rank    int
+	Votes   int
+	Time    string
 }
 
 func formatDuration(duration time.Duration) string {
@@ -39,21 +41,31 @@ func getHNArticles() []hnArticle {
 	c := colly.NewCollector()
 
 	c.OnHTML("article", func(e *colly.HTMLElement) {
-		fmt.Println(e.ChildText(".post-summary"))
-		fmt.Println(e.ChildText(".post-title"))
-		fmt.Println(e.ChildText(".score"))
-		fmt.Println(e.ChildText(".host"))
-
 		articleTime, _ := time.Parse("2006-01-02 15:04:05 MST", e.ChildText("span .last-updated"))
-		fmt.Println(formatDuration(time.Now().Sub(articleTime)))
-		fmt.Println(time.Now().Sub(articleTime))
-		fmt.Println(e.Attr("data-rank"))
+		articleTimeFormatted := formatDuration(time.Since(articleTime))
+		score, _ := strconv.Atoi(e.ChildText(".score"))
+		rank, _ := strconv.Atoi(e.ChildText(".data-rank"))
+		title := e.ChildText(".post-title")
+		summary := e.ChildText(".post-summary")
+
+		if len(summary) > 0 && len(title) > 0 {
+			articles = append(articles, hnArticle{
+				Title:   title,
+				Summary: summary,
+				Votes:   score,
+				Link:    e.ChildText(".host"),
+				Rank:    rank,
+				Time:    articleTimeFormatted,
+			})
+		}
 
 	})
 
 	c.Visit("https://hackernews.betacat.io/")
 
-	fmt.Println("Done")
+	sort.Slice(articles, func(i, j int) bool {
+		return articles[i].Rank < articles[j].Rank
+	})
 
 	return articles
 }

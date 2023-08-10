@@ -12,7 +12,6 @@
             display: -webkit-box;
             display: -webkit-flex;
             display: flex;
-
             flex-direction: row;
             flex-wrap: wrap;
         }
@@ -28,53 +27,91 @@
             font-size: 7px;
             line-height: 10px;
         }
-        img{
+        img .weather{
             margin-top: 5px;
+        }
+
+        .taskRems{
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            font-size: 14px;
+        }
+
+        .vbox{
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+        }
+
+        .hbox{
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+
+        .txt1{
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            font-size: 10px;
+        }
+        .txt2{
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            font-size: 7px;
+        }
+        .margin0{
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+        .margin1{
+            margin-top: 20px;
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
-    <!-- <h1>Tasks:</h1> -->
     <ol>
-        {{range .Tasks}} <li>{{.}}</li> {{end}}
+        {{range .TasksRems}} <li class="taskRems">{{.}}</li> {{end}}
     </ol>
+    <hr><hr><br>
     
     <div class="c1">
         <div class="c2">
             {{(index .Interval 0).StartTime.Hour}}:{{(index .Interval 0).StartTime.Minute}}
             <br>
             {{(index .Interval 0).Values.Temperature}}°C {{(index .Interval 0).Values.TemperatureApparent}}°C
-            <img src="./weathercodes/{{(index .Interval 0).Values.WeatherCode}}0.png" style="width: 100%">
+            <img class="weather" src="./weathercodes/{{(index .Interval 0).Values.WeatherCode}}0.png" style="width: 100%">
         </div>
         <div class="c2">
             {{(index .Interval 1).StartTime.Hour}}:{{(index .Interval 1).StartTime.Minute}}
             <br>
             {{(index .Interval 1).Values.Temperature}}°C {{(index .Interval 1).Values.TemperatureApparent}}°C
-            <img src="./weathercodes/{{(index .Interval 1).Values.WeatherCode}}0.png" style="width: 100%">
+            <img class="weather" src="./weathercodes/{{(index .Interval 1).Values.WeatherCode}}0.png" style="width: 100%">
         </div>
         <div class="c2">
             {{(index .Interval 2).StartTime.Hour}}:{{(index .Interval 2).StartTime.Minute}}
             <br>
             {{(index .Interval 2).Values.Temperature}}°C {{(index .Interval 2).Values.TemperatureApparent}}°C
-            <img src="./weathercodes/{{(index .Interval 2).Values.WeatherCode}}0.png" style="width: 100%">
+            <img class="weather" src="./weathercodes/{{(index .Interval 2).Values.WeatherCode}}0.png" style="width: 100%">
         </div>
         <div class="c2">
             {{(index .Interval 3).StartTime.Hour}}:{{(index .Interval 3).StartTime.Minute}}
             <br>
             {{(index .Interval 3).Values.Temperature}}°C {{(index .Interval 3).Values.TemperatureApparent}}°C
-            <img src="./weathercodes/{{(index .Interval 3).Values.WeatherCode}}0.png" style="width: 100%">
+            <img class="weather" src="./weathercodes/{{(index .Interval 3).Values.WeatherCode}}0.png" style="width: 100%">
         </div>
         <div class="c2">
             {{(index .Interval 4).StartTime.Hour}}:{{(index .Interval 4).StartTime.Minute}}
             <br>
             {{(index .Interval 4).Values.Temperature}}°C {{(index .Interval 4).Values.TemperatureApparent}}°C
-            <img src="./weathercodes/{{(index .Interval 4).Values.WeatherCode}}0.png" style="width: 100%">
+            <img class="weather" src="./weathercodes/{{(index .Interval 4).Values.WeatherCode}}0.png" style="width: 100%">
         </div>
         <div class="c2">
             {{(index .Interval 5).StartTime.Hour}}:{{(index .Interval 5).StartTime.Minute}}
             <br>
             {{(index .Interval 5).Values.Temperature}}°C {{(index .Interval 5).Values.TemperatureApparent}}°C
-            <img src="./weathercodes/{{(index .Interval 5).Values.WeatherCode}}0.png" style="width: 100%">
+            <img class="weather" src="./weathercodes/{{(index .Interval 5).Values.WeatherCode}}0.png" style="width: 100%">
         </div>
     </div>
     <br>
@@ -83,37 +120,37 @@
             {{(index .Interval 6).StartTime.Hour}}:{{(index .Interval 6).StartTime.Minute}}
             <br>
             {{(index .Interval 6).Values.Temperature}}°C {{(index .Interval 6).Values.TemperatureApparent}}°C
-            <img src="./weathercodes/{{(index .Interval 6).Values.WeatherCode}}0.png" style="width: 100%">
+            <img class="weather" src="./weathercodes/{{(index .Interval 6).Values.WeatherCode}}0.png" style="width: 100%">
         </div>
         <div class="c2">
             {{(index .Interval 7).StartTime.Hour}}:{{(index .Interval 7).StartTime.Minute}}
             <br>
             {{(index .Interval 7).Values.Temperature}}°C {{(index .Interval 7).Values.TemperatureApparent}}°C
-            <img src="./weathercodes/{{(index .Interval 7).Values.WeatherCode}}0.png" style="width: 100%">
+            <img class="weather" src="./weathercodes/{{(index .Interval 7).Values.WeatherCode}}0.png" style="width: 100%">
         </div>
         <div class="c2">
             {{(index .Interval 8).StartTime.Hour}}:{{(index .Interval 8).StartTime.Minute}}
             <br>
             {{(index .Interval 8).Values.Temperature}}°C {{(index .Interval 8).Values.TemperatureApparent}}°C
-            <img src="./weathercodes/{{(index .Interval 8).Values.WeatherCode}}0.png" style="width: 100%">
+            <img class="weather" src="./weathercodes/{{(index .Interval 8).Values.WeatherCode}}0.png" style="width: 100%">
         </div>
         <div class="c2">
             {{(index .Interval 9).StartTime.Hour}}:{{(index .Interval 9).StartTime.Minute}}
             <br>
             {{(index .Interval 9).Values.Temperature}}°C {{(index .Interval 9).Values.TemperatureApparent}}°C
-            <img src="./weathercodes/{{(index .Interval 9).Values.WeatherCode}}0.png" style="width: 100%">
+            <img class="weather" src="./weathercodes/{{(index .Interval 9).Values.WeatherCode}}0.png" style="width: 100%">
         </div>
         <div class="c2">
             {{(index .Interval 10).StartTime.Hour}}:{{(index .Interval 10).StartTime.Minute}}
             <br>
             {{(index .Interval 10).Values.Temperature}}°C {{(index .Interval 10).Values.TemperatureApparent}}°C
-            <img src="./weathercodes/{{(index .Interval 10).Values.WeatherCode}}0.png" style="width: 100%">
+            <img class="weather" src="./weathercodes/{{(index .Interval 10).Values.WeatherCode}}0.png" style="width: 100%">
         </div>
         <div class="c2">
             {{(index .Interval 11).StartTime.Hour}}:{{(index .Interval 11).StartTime.Minute}}
             <br>
             {{(index .Interval 11).Values.Temperature}}°C {{(index .Interval 11).Values.TemperatureApparent}}°C
-            <img src="./weathercodes/{{(index .Interval 11).Values.WeatherCode}}0.png" style="width: 100%">
+            <img class="weather" src="./weathercodes/{{(index .Interval 11).Values.WeatherCode}}0.png" style="width: 100%">
         </div>
     </div>
     <br>
@@ -122,41 +159,49 @@
             {{(index .Interval 12).StartTime.Hour}}:{{(index .Interval 12).StartTime.Minute}}
             <br>
             {{(index .Interval 12).Values.Temperature}}°C {{(index .Interval 12).Values.TemperatureApparent}}°C
-            <img src="./weathercodes/{{(index .Interval 12).Values.WeatherCode}}0.png" style="width: 100%">
+            <img class="weather" src="./weathercodes/{{(index .Interval 12).Values.WeatherCode}}0.png" style="width: 100%">
         </div>
         <div class="c2">
             {{(index .Interval 13).StartTime.Hour}}:{{(index .Interval 13).StartTime.Minute}}
             <br>
             {{(index .Interval 13).Values.Temperature}}°C {{(index .Interval 13).Values.TemperatureApparent}}°C
-            <img src="./weathercodes/{{(index .Interval 13).Values.WeatherCode}}0.png" style="width: 100%">
+            <img class="weather" src="./weathercodes/{{(index .Interval 13).Values.WeatherCode}}0.png" style="width: 100%">
         </div>
         <div class="c2">
             {{(index .Interval 14).StartTime.Hour}}:{{(index .Interval 14).StartTime.Minute}}
             <br>
             {{(index .Interval 14).Values.Temperature}}°C {{(index .Interval 14).Values.TemperatureApparent}}°C
-            <img src="./weathercodes/{{(index .Interval 14).Values.WeatherCode}}0.png" style="width: 100%">
+            <img class="weather" src="./weathercodes/{{(index .Interval 14).Values.WeatherCode}}0.png" style="width: 100%">
         </div>
         <div class="c2">
             {{(index .Interval 15).StartTime.Hour}}:{{(index .Interval 15).StartTime.Minute}}
             <br>
             {{(index .Interval 15).Values.Temperature}}°C {{(index .Interval 15).Values.TemperatureApparent}}°C
-            <img src="./weathercodes/{{(index .Interval 15).Values.WeatherCode}}0.png" style="width: 100%">
+            <img class="weather" src="./weathercodes/{{(index .Interval 15).Values.WeatherCode}}0.png" style="width: 100%">
         </div>
         <div class="c2">
             {{(index .Interval 16).StartTime.Hour}}:{{(index .Interval 16).StartTime.Minute}}
             <br>
             {{(index .Interval 16).Values.Temperature}}°C {{(index .Interval 16).Values.TemperatureApparent}}°C
-            <img src="./weathercodes/{{(index .Interval 16).Values.WeatherCode}}0.png" style="width: 100%">
+            <img class="weather" src="./weathercodes/{{(index .Interval 16).Values.WeatherCode}}0.png" style="width: 100%">
         </div>
         <div class="c2">
             {{(index .Interval 17).StartTime.Hour}}:{{(index .Interval 17).StartTime.Minute}}
             <br>
             {{(index .Interval 17).Values.Temperature}}°C {{(index .Interval 17).Values.TemperatureApparent}}°C
-            <img src="./weathercodes/{{(index .Interval 17).Values.WeatherCode}}0.png" style="width: 100%">
+            <img class="weather" src="./weathercodes/{{(index .Interval 17).Values.WeatherCode}}0.png" style="width: 100%">
         </div>
-        <br><br><br><br><br><br><br>.
-
-        
     </div>
+    <br><hr><hr><br>
+
+    <div>
+        {{range .HNArticles}}
+            <div class = "txt1 margin0">{{.Title}} </div>
+            <div class = "txt2 margin0">{{.Votes}} ❤️   |   {{.Time}}   |   {{.Link}}</div>
+            <div class = "txt1 margin0">{{.Summary}} </div>
+            <div class = "margin1"></div><hr><div class = "margin1"></div>
+       {{end}}
+    </div>
+    <br><br><br><br><br><br><br>.
 </body>
 </html>

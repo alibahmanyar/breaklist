@@ -13,8 +13,9 @@ import (
 )
 
 type PageData struct {
-	Tasks    []string
-	Interval intervals
+	TasksRems  []string
+	Interval   intervals
+	HNArticles []hnArticle
 }
 
 func check(e error) {
@@ -48,8 +49,8 @@ func getLines(filename string) ([]string, error) {
 
 func main() {
 	godotenv.Load()
-
 	var err error
+
 	// Get weather data
 	interval := getWeatherForecast()
 
@@ -93,16 +94,19 @@ func main() {
 		reminders = append(reminders, rs[1])
 	}
 
+	// Get HN articles
+	articles := getHNArticles()[:8]
+
 	// Rendering the HTML template
 	tmpl, _ := template.ParseFiles("template.html")
 	f, _ := os.Create("temp.html")
-	err = tmpl.Execute(f, PageData{Tasks: append(tasks, reminders...), Interval: interval})
+	err = tmpl.Execute(f, PageData{TasksRems: append(tasks, reminders...), Interval: interval, HNArticles: articles})
 	f.Close()
 	check(err)
 
 	f.Close()
 
-	cmd := exec.Command("sh", "-c", "./wkhtmltopdf --encoding utf-8 --margin-top 1mm --margin-bottom 7mm --margin-left 0mm --margin-right 0mm --page-height 210mm --page-width 47mm --grayscale --enable-local-file-access \"temp.html\" \"to_print.pdf\"")
+	cmd := exec.Command("sh", "-c", "./wkhtmltopdf --encoding utf-8 --margin-top 1mm --margin-bottom 7mm --margin-left 0mm --margin-right 0mm --page-height 500mm --page-width 47mm --grayscale --enable-local-file-access \"temp.html\" \"to_print.pdf\"")
 	_, err = cmd.Output()
 	check(err)
 
