@@ -12,11 +12,11 @@ build-all: build/reportGenerator build/webserver build/frontend
 
 
 build/webserver: ./backend/*
-	cd ./backend; go build -o ../build/webserver .
+	cd ./backend; go build -ldflags '-w -s' -o ../build/webserver .
 
 
 build/reportGenerator: ./reportGenerator/*
-	cd ./reportGenerator; go build -o ../build/reportGenerator .; cp -r weathercodes template.html ../build/
+	cd ./reportGenerator; go build -ldflags '-w -s' -o ../build/reportGenerator .; cp -r weathercodes template.html ../build/
 	cp ./reportGenerator/.env.example build/.env
 	- cp ./reportGenerator/.env build/.env
 
