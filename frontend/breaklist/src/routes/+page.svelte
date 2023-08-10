@@ -261,23 +261,33 @@
 	}
 
 	:global(body.light-mode) .sbtn {
-		color: black;
+		color: hsl(215, 68%, 7%);
 	}
 
 	.sbtn:active {
+		color: gray;
+	}
+	:global(body.light-mode) .sbtn:active {
 		color: gray;
 	}
 
 	.pp_btn {
 		margin-top: 20px;
 		font-size: 1.2rem;
-		border-color: gray;
 		border-width: 1px;
 		background-color: rgba(0, 0, 0, 0);
+		color: hsl(0, 0%, 98%);
 		border: 2px solid;
 		padding: 5px 40px 5px 40px;
 	}
 	.pp_btn:active {
+		color: gray;
+	}
+
+	:global(body.light-mode) .pp_btn {
+		color: hsl(215, 68%, 7%);
+	}
+	:global(body.light-mode) .pp_btn:active {
 		color: gray;
 	}
 
