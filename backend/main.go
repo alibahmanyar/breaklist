@@ -4,12 +4,14 @@ import (
 	"bytes"
 	"encoding/json"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/helmet"
+	"github.com/joho/godotenv"
 	"golang.org/x/exp/slices"
 )
 
@@ -46,7 +48,7 @@ func getLines(filename string) ([]string, error) {
 }
 
 func getTasks(c *fiber.Ctx) error {
-	tasks, err0 := getLines("tasks.list")
+	tasks, err0 := getLines(os.Getenv("TASKS_LIST_PATH"))
 
 	err1 := c.JSON(&response{Message: "success",
 		Data: tasks})
@@ -60,7 +62,7 @@ func getTasks(c *fiber.Ctx) error {
 }
 
 func getReminders(c *fiber.Ctx) error {
-	rems, err0 := getLines("reminders.list")
+	rems, err0 := getLines(os.Getenv("REMINDERS_LIST_PATH"))
 
 	err1 := c.JSON(&response{Message: "success",
 		Data: rems})
@@ -80,9 +82,9 @@ func addTasks(c *fiber.Ctx) error {
 
 	err0 := dec.Decode(&data)
 
-	tasks, _ := getLines("tasks.list")
+	tasks, _ := getLines(os.Getenv("TASKS_LIST_PATH"))
 
-	f, err1 := os.OpenFile("tasks.list", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
+	f, err1 := os.OpenFile(os.Getenv("TASKS_LIST_PATH"), os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
 	if err1 != nil {
 		log.Error(err1)
 	}
@@ -110,9 +112,9 @@ func addReminders(c *fiber.Ctx) error {
 
 	err0 := dec.Decode(&data)
 
-	rems, _ := getLines("reminders.list")
+	rems, _ := getLines(os.Getenv("REMINDERS_LIST_PATH"))
 
-	f, err1 := os.OpenFile("reminders.list", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
+	f, err1 := os.OpenFile(os.Getenv("REMINDERS_LIST_PATH"), os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
 	if err1 != nil {
 		log.Error(err1)
 	}
@@ -140,10 +142,10 @@ func delTasks(c *fiber.Ctx) error {
 
 	err0 := dec.Decode(&data)
 
-	tasksf, _ := os.ReadFile("tasks.list")
+	tasksf, _ := os.ReadFile(os.Getenv("TASKS_LIST_PATH"))
 	tasks := strings.Split(string(tasksf), "\n")
 
-	f, err1 := os.Create("tasks.list")
+	f, err1 := os.Create(os.Getenv("TASKS_LIST_PATH"))
 	if err1 != nil {
 		log.Error(err1)
 	}
@@ -176,10 +178,10 @@ func delReminders(c *fiber.Ctx) error {
 
 	err0 := dec.Decode(&data)
 
-	remsf, _ := os.ReadFile("reminders.list")
+	remsf, _ := os.ReadFile(os.Getenv("REMINDERS_LIST_PATH"))
 	rems := strings.Split(string(remsf), "\n")
 
-	f, err1 := os.Create("reminders.list")
+	f, err1 := os.Create(os.Getenv("REMINDERS_LIST_PATH"))
 	if err1 != nil {
 		log.Error(err1)
 	}
@@ -205,9 +207,14 @@ func delReminders(c *fiber.Ctx) error {
 }
 
 func main() {
+	godotenv.Load()
+
 	// Create tasks and reminders files if they don't exist
-	f1, _ := os.OpenFile("tasks.list", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
-	f2, _ := os.OpenFile("reminders.list", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
+	os.MkdirAll(filepath.Dir(os.Getenv("TASKS_LIST_PATH")), os.ModePerm)
+	os.MkdirAll(filepath.Dir(os.Getenv("REMINDERS_LIST_PATH")), os.ModePerm)
+
+	f1, _ := os.OpenFile(os.Getenv("TASKS_LIST_PATH"), os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
+	f2, _ := os.OpenFile(os.Getenv("REMINDERS_LIST_PATH"), os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
 	f1.Close()
 	f2.Close()
 
@@ -216,14 +223,16 @@ func main() {
 	app.Use(helmet.New())
 	app.Use(cors.New())
 
-	app.Get("/task", getTasks)
-	app.Get("/reminder", getReminders)
+	app.Get("/api/task", getTasks)
+	app.Get("/api/reminder", getReminders)
 
-	app.Post("/task", addTasks)
-	app.Post("/reminder", addReminders)
+	app.Post("/api/task", addTasks)
+	app.Post("/api/reminder", addReminders)
 
-	app.Delete("/task", delTasks)
-	app.Delete("/reminder", delReminders)
+	app.Delete("/api/task", delTasks)
+	app.Delete("/api/reminder", delReminders)
+
+	app.Static("/", "./static/")
 
 	app.Listen(":3000")
 }

@@ -55,11 +55,11 @@ func main() {
 	interval := getWeatherForecast()
 
 	// Get tasks list
-	tasks, err := getLines("tasks.list")
+	tasks, err := getLines(os.Getenv("TASKS_LIST_PATH"))
 	check(err)
 
 	// Get reminders list and check which ones should be reminded today
-	allReminders, err := getLines("reminders.list")
+	allReminders, err := getLines(os.Getenv("REMINDERS_LIST_PATH"))
 	check(err)
 	var reminders []string
 
@@ -106,7 +106,7 @@ func main() {
 
 	f.Close()
 
-	cmd := exec.Command("sh", "-c", "./wkhtmltopdf --encoding utf-8 --margin-top 1mm --margin-bottom 7mm --margin-left 0mm --margin-right 0mm --page-height 500mm --page-width 47mm --grayscale --enable-local-file-access \"temp.html\" \"to_print.pdf\"")
+	cmd := exec.Command("sh", "-c", "wkhtmltopdf --encoding utf-8 --margin-top 1mm --margin-bottom 7mm --margin-left 0mm --margin-right 0mm --page-height 500mm --page-width 47mm --grayscale --enable-local-file-access \"temp.html\" \"to_print.pdf\"")
 	_, err = cmd.Output()
 	check(err)
 

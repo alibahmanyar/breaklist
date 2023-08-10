@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
     import { fade, blur, slide } from "svelte/transition";
 
-	const API_URL = 'http://localhost:3000/';
+	const API_URL = 'http://localhost:3000/api/';
 	let darkMode = true;
 	let tasks = [''];
 	let state = 0; // 0 -> loading / 1-> done loading
