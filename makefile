@@ -1,14 +1,14 @@
 frontend_API_URL := /api
 
-.PHONY: clean setup build-all
+.PHONY: clean setup all
+
+all: build/reportGenerator build/webserver build/static
 
 setup:
 	cd ./frontend/breaklist; npm install
 	
 clean:
 	rm -rf build
-
-build-all: build/reportGenerator build/webserver build/frontend
 
 
 build/webserver: ./backend/*
@@ -20,9 +20,5 @@ build/reportGenerator: ./reportGenerator/*
 	cp ./reportGenerator/.env.example build/.env
 	- cp ./reportGenerator/.env build/.env
 
-build/frontend: ./frontend/breaklist/src/routes/* ./frontend/breaklist/* ./frontend/breaklist/src/* 
-	mkdir -p tmp; cp ./frontend/breaklist/src/routes/+page.svelte ./tmp/+page.svelte.backup
-	sed -i 's,http://localhost:3000/api,$(frontend_API_URL),g' ./frontend/breaklist/src/routes/+page.svelte
+build/static: ./frontend/breaklist/src/routes/* ./frontend/breaklist/* ./frontend/breaklist/src/* 
 	cd ./frontend/breaklist; npm run build; cp -r ./build/ ../../build/static/
-	cp ./tmp/+page.svelte.backup ./frontend/breaklist/src/routes/+page.svelte
-	rm -rf ./tmp

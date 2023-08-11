@@ -1,13 +1,19 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-    import { fade, blur, slide } from "svelte/transition";
+	import { fade, blur, slide } from 'svelte/transition';
+	const { MODE } = import.meta.env;
 
-	const API_URL = 'http://localhost:3000/api/';
+	const DEV_URL = 'http://localhost:3000/api/';
+	const PROD_URL = '/api/';
+	const API_URL = MODE === 'development' ? DEV_URL : PROD_URL;
+
 	let darkMode = true;
 	let tasks = [''];
 	let state = 0; // 0 -> loading / 1-> done loading
-	let newTask = '', taskToDelete = '';
-	let addTaskPopUp = false, delTaskPopUp = false;
+	let newTask = '',
+		taskToDelete = '';
+	let addTaskPopUp = false,
+		delTaskPopUp = false;
 
 	async function updateTasks() {
 		state = 0;
@@ -24,9 +30,9 @@
 		else window.document.body.classList.add('light-mode');
 	});
 
-	function init(el: any){
-    	el.focus()
-  	}
+	function init(el: any) {
+		el.focus();
+	}
 
 	function toggleDarkMode() {
 		darkMode = !darkMode;
@@ -70,15 +76,20 @@
 		<form on:submit={addTask}>
 			<div class="vbox font1" id="pp0">
 				<div>Add New task:</div>
-				<input type="text" style="width: 80%; height: 2vh;" bind:value={newTask} use:init/>
-
+				<input type="text" style="width: 80%; height: 2vh;" bind:value={newTask} use:init />
 
 				<div style="display: flex; flex-direction: row;">
-					<button class="pp_btn" on:click={() => {addTaskPopUp = false; newTask = '';}} type="reset">Back</button>
-					<span style="padding-left: 10px; padding-right: 10px;"></span>
+					<button
+						class="pp_btn"
+						on:click={() => {
+							addTaskPopUp = false;
+							newTask = '';
+						}}
+						type="reset">Back</button
+					>
+					<span style="padding-left: 10px; padding-right: 10px;" />
 					<button class="pp_btn" type="submit">Add task</button>
 				</div>
-				
 			</div>
 		</form>
 	</div>
@@ -86,21 +97,30 @@
 
 {#if delTaskPopUp}
 	<div class="popup" transition:blur>
-		<form on:submit={() => {delTask(taskToDelete); delTaskPopUp=false;}}>
+		<form
+			on:submit={() => {
+				delTask(taskToDelete);
+				delTaskPopUp = false;
+			}}
+		>
 			<div class="vbox font1" id="pp0">
 				<div>Delete {taskToDelete}?</div>
-				
+
 				<div style="display: flex; flex-direction: row;">
-					<button class="pp_btn" on:click={() => {delTaskPopUp = false;}} type="reset">Back</button>
-					<span style="padding-left: 10px; padding-right: 10px;"></span>
+					<button
+						class="pp_btn"
+						on:click={() => {
+							delTaskPopUp = false;
+						}}
+						type="reset">Back</button
+					>
+					<span style="padding-left: 10px; padding-right: 10px;" />
 					<button class="pp_btn" type="submit">Delete task</button>
 				</div>
-				
 			</div>
 		</form>
 	</div>
 {/if}
-
 
 <button class="sbtn" id="darkModeBtn" on:click={toggleDarkMode}>
 	{#if darkMode}
@@ -118,7 +138,6 @@
 				class="sbtn"
 				on:click={() => {
 					addTaskPopUp = true;
-
 				}}
 			>
 				<span class="material-icons" style="font-size: 2.5rem; padding-top:5px">add</span>
@@ -226,8 +245,6 @@
 	:global(body.light-mode) #pp0 {
 		background-color: rgba(255, 255, 255, 0.5);
 	}
-
-	
 
 	:global(html, body) {
 		height: 100%;
