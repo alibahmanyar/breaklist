@@ -1,5 +1,3 @@
-frontend_API_URL := /api
-
 .PHONY: clean setup all
 
 all: build/reportGenerator build/webserver build/static
