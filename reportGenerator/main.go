@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"html/template"
+	"log"
 	"os"
 	"os/exec"
 	"strconv"
@@ -20,6 +20,7 @@ type PageData struct {
 
 func check(e error) {
 	if e != nil {
+		log.Fatal(e)
 		panic(e)
 	}
 }
@@ -106,9 +107,9 @@ func main() {
 
 	f.Close()
 
-	cmd := exec.Command("sh", "-c", "wkhtmltopdf --encoding utf-8 --margin-top 1mm --margin-bottom 7mm --margin-left 0mm --margin-right 0mm --page-height 500mm --page-width 47mm --grayscale --enable-local-file-access \"temp.html\" \"to_print.pdf\"")
+	cmd := exec.Command("sh", "-c", "wkhtmltopdf --encoding utf-8 --margin-top 1mm --margin-bottom 7mm --margin-left 0mm --margin-right 0mm --page-height 500mm --page-width 47mm --grayscale --enable-local-file-access \"temp.html\" \"breaklist.pdf\"")
 	_, err = cmd.Output()
 	check(err)
 
-	fmt.Println("Done")
+	log.Print("Created new report")
 }
