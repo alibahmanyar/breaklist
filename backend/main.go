@@ -50,29 +50,31 @@ func getLines(filename string) ([]string, error) {
 func getTasks(c *fiber.Ctx) error {
 	tasks, err0 := getLines(os.Getenv("TASKS_LIST_PATH"))
 
-	err1 := c.JSON(&response{Message: "success",
-		Data: tasks})
+	err1 := c.JSON(&response{
+		Message: "success",
+		Data:    tasks,
+	})
 
 	if err0 != nil {
 		return err0
 	} else {
 		return err1
 	}
-
 }
 
 func getReminders(c *fiber.Ctx) error {
 	rems, err0 := getLines(os.Getenv("REMINDERS_LIST_PATH"))
 
-	err1 := c.JSON(&response{Message: "success",
-		Data: rems})
+	err1 := c.JSON(&response{
+		Message: "success",
+		Data:    rems,
+	})
 
 	if err0 != nil {
 		return err0
 	} else {
 		return err1
 	}
-
 }
 
 func addTasks(c *fiber.Ctx) error {
@@ -168,7 +170,6 @@ func delTasks(c *fiber.Ctx) error {
 	} else {
 		return err1
 	}
-
 }
 
 func delReminders(c *fiber.Ctx) error {

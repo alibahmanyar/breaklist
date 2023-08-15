@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { fade, blur, slide } from 'svelte/transition';
+	import { blur } from 'svelte/transition';
 	const { MODE } = import.meta.env;
 
-	const DEV_URL = 'http://localhost:3000/api/';
+	const DEV_URL = 'http://localhost:3030/api/';
 	const PROD_URL = '/api/';
 	const API_URL = MODE === 'development' ? DEV_URL : PROD_URL;
 
@@ -57,7 +57,6 @@
 
 	async function addTask() {
 		console.log(newTask);
-		addTaskPopUp = false;
 
 		let response = await fetch(API_URL + 'task', {
 			method: 'POST',
@@ -73,7 +72,13 @@
 
 {#if addTaskPopUp}
 	<div class="popup" transition:blur>
-		<form on:submit={addTask}>
+		<form
+			on:submit={(e) => {
+				e.preventDefault();
+				addTask();
+				addTaskPopUp = false;
+			}}
+		>
 			<div class="vbox font1" id="pp0">
 				<div>Add New task:</div>
 				<input type="text" style="width: 80%; height: 2vh;" bind:value={newTask} use:init />
@@ -98,7 +103,8 @@
 {#if delTaskPopUp}
 	<div class="popup" transition:blur>
 		<form
-			on:submit={() => {
+			on:submit={(e) => {
+				e.preventDefault();
 				delTask(taskToDelete);
 				delTaskPopUp = false;
 			}}
