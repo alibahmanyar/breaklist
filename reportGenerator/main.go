@@ -48,6 +48,66 @@ func getLines(filename string) ([]string, error) {
 	return lines, err
 }
 
+// matchesCronPart checks if a given value matches a cron part.
+// Parameters:
+//   - value: The value to match against the cron part.
+//   - cronPart: The cron part (DOM, M, or DOW) to match against.
+//
+// Returns true if the value matches any part of the cronPart, otherwise false.
+func matchesCronPart(value int, cronPart string) bool {
+	if cronPart == "*" {
+		return true // Wildcard always matches
+	}
+
+	values := strings.Split(cronPart, ",")
+	for _, v := range values {
+		if strings.HasPrefix(v, "*/") {
+			intervalStr := strings.TrimPrefix(v, "*/")
+			interval, err := strconv.Atoi(intervalStr)
+			check(err)
+			if value%interval == 0 {
+				return true // Value matches an interval
+			}
+		} else {
+			expectedValue, err := strconv.Atoi(v)
+			check(err)
+			if value == expectedValue {
+				return true // Value matches an expected specific value
+			}
+		}
+	}
+
+	return false // No match found
+}
+
+// matchCronExpression checks if a given date matches a cron expression.
+// The cron expression is in the format "DOM M DOW".
+// Parameters:
+//   - date: The date to check against the cron expression.
+//   - cronExpression: The cron expression to match against.
+//
+// Returns true if the date matches the cron expression, otherwise false.
+func matchCronExpression(date time.Time, cronExpression string) bool {
+	parts := strings.Split(cronExpression, " ")
+
+	// Check Day of Month (DOM)
+	if !matchesCronPart(date.Day(), parts[0]) {
+		return false
+	}
+
+	// Check Month (M)
+	if !matchesCronPart(int(date.Month()), parts[1]) {
+		return false
+	}
+
+	// Check Day of Week (DOW)
+	if !matchesCronPart(int(date.Weekday()), parts[2]) {
+		return false
+	}
+
+	return true
+}
+
 func main() {
 	godotenv.Load()
 	var err error
@@ -64,35 +124,14 @@ func main() {
 	check(err)
 	var reminders []string
 
+	now := time.Now()
+
 	for _, r := range allReminders {
 		rs := strings.Split(r, "|")
-		dates := strings.Split(rs[0], " ")
 
-		if dates[0] != "*" {
-			dom, err := strconv.Atoi(dates[0]) // Day of month
-			check(err)
-			if dom != time.Now().Day() {
-				continue
-			}
+		if matchCronExpression(now, rs[0]) {
+			reminders = append(reminders, rs[1])
 		}
-
-		if dates[1] != "*" {
-			m, err := strconv.Atoi(dates[1]) // Month
-			check(err)
-			if m != int(time.Now().Month()) {
-				continue
-			}
-		}
-
-		if dates[2] != "*" {
-			dow, err := strconv.Atoi(dates[2]) // Day of week
-			check(err)
-			if dow != int(time.Now().Weekday()) {
-				continue
-			}
-		}
-
-		reminders = append(reminders, rs[1])
 	}
 
 	// Get HN articles
