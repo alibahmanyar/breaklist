@@ -21,7 +21,7 @@ The project also features a user-friendly web application that facilitates task 
 
 ### Prerequisites
 
-- [wkhtmltopdf](https://wkhtmltopdf.org/downloads.html) needs to be installed. It can be downloaded from [here](https://wkhtmltopdf.org/downloads.html).
+- [wkhtmltopdf](https://github.com/wkhtmltopdf/wkhtmltopdf) needs to be installed. It can be downloaded from [here](https://wkhtmltopdf.org/downloads.html).
 - A Tomorrow.io API key
 
 ### Installation
