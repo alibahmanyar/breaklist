@@ -1,4 +1,5 @@
 # Breaklist - A morning report generator for thermal printers
+![](./docs/images/2.jpg)
 Breaklist is a set of tools for generating a morning report on a thermal printer. The morning report includes:
 
 - A task list 
@@ -47,6 +48,9 @@ Once the variables are set, Breaklist can be operated using the following comman
 - The `reportGenerator` executable will generate the report as `breaklist.pdf` which can be printed using a thermal printer.
 
 - The `webserver` executable will run the web application to manage the tasks. The web app will be available at `:3030`.
+
+### Weather Forecast
+The weather forecast includes temperature, "RealFeel," and an icon indicating the weather condition.
 
 ### tasks.list and reminders.list
 The `tasks.list` file contains the list of current tasks in plain text format, with each task on a separate line.
