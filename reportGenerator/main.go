@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
@@ -109,8 +110,18 @@ func matchCronExpression(date time.Time, cronExpression string) bool {
 }
 
 func main() {
-	godotenv.Load()
 	var err error
+
+	godotenv.Load()
+
+	// Create tasks and reminders files if they don't exist
+	os.MkdirAll(filepath.Dir(os.Getenv("TASKS_LIST_PATH")), os.ModePerm)
+	os.MkdirAll(filepath.Dir(os.Getenv("REMINDERS_LIST_PATH")), os.ModePerm)
+
+	f1, _ := os.OpenFile(os.Getenv("TASKS_LIST_PATH"), os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
+	f2, _ := os.OpenFile(os.Getenv("REMINDERS_LIST_PATH"), os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
+	f1.Close()
+	f2.Close()
 
 	// Get weather data
 	interval := getWeatherForecast()
