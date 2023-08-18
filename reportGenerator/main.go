@@ -15,7 +15,7 @@ import (
 
 type PageData struct {
 	TasksRems  []string
-	Interval   intervals
+	Forecast   []weatherForecast
 	HNArticles []hnArticle
 }
 
@@ -124,7 +124,7 @@ func main() {
 	f2.Close()
 
 	// Get weather data
-	interval := getWeatherForecast()
+	forecast := getWeatherForecast()
 
 	// Get tasks list
 	tasks, err := getLines(os.Getenv("TASKS_LIST_PATH"))
@@ -151,11 +151,9 @@ func main() {
 	// Rendering the HTML template
 	tmpl, _ := template.ParseFiles("template.html")
 	f, _ := os.Create("temp.html")
-	err = tmpl.Execute(f, PageData{TasksRems: append(tasks, reminders...), Interval: interval, HNArticles: articles})
+	err = tmpl.Execute(f, PageData{TasksRems: append(tasks, reminders...), Forecast: forecast, HNArticles: articles})
 	f.Close()
 	check(err)
-
-	f.Close()
 
 	cmd := exec.Command("sh", "-c", "wkhtmltopdf --encoding utf-8 --margin-top 1mm --margin-bottom 7mm --margin-left 0mm --margin-right 0mm --page-height 500mm --page-width 47mm --grayscale --enable-local-file-access \"temp.html\" \"breaklist.pdf\"")
 	_, err = cmd.Output()
