@@ -44,7 +44,7 @@ Before running Breaklist, duplicate the `.env.example` file and rename it to `.e
 
 Once the variables are set, Breaklist can be operated using the following commands:
 
-- The `reportGenerator` executable will generate the reporrt as `breaklist.pdf` which can be printed using a thermal printer.
+- The `reportGenerator` executable will generate the report as `breaklist.pdf` which can be printed using a thermal printer.
 
 - The `webserver` executable will run the web application to manage the tasks. The web app will be available at `:3030`.
 
