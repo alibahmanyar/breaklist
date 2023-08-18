@@ -21,7 +21,7 @@ The project also features a user-friendly web application that facilitates task 
 
 ### Prerequisites
 
-- [wkhtmltopdf](https://wkhtmltopdf.org/downloads.html) needs to be installed. It can be downloaded from [here](https://wkhtmltopdf.org/downloads.html).
+- [wkhtmltopdf](https://github.com/wkhtmltopdf/wkhtmltopdf) needs to be installed. It can be downloaded from [here](https://wkhtmltopdf.org/downloads.html).
 - A Tomorrow.io API key
 
 ### Installation
@@ -44,7 +44,7 @@ Before running Breaklist, duplicate the `.env.example` file and rename it to `.e
 
 Once the variables are set, Breaklist can be operated using the following commands:
 
-- The `reportGenerator` executable will generate the reporrt as `breaklist.pdf` which can be printed using a thermal printer.
+- The `reportGenerator` executable will generate the report as `breaklist.pdf` which can be printed using a thermal printer.
 
 - The `webserver` executable will run the web application to manage the tasks. The web app will be available at `:3030`.
 
