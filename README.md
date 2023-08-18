@@ -1,5 +1,6 @@
 # Breaklist - A morning report generator for thermal printers
 ![](./docs/images/2.jpg)
+
 Breaklist is a set of tools for generating a morning report on a thermal printer. The morning report includes:
 
 - A task list 
