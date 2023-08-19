@@ -1,8 +1,10 @@
 *.list
 *.pdf
+*.exe
 temp.html
 .env
 go.work.sum
 tmp/
 .vscode
 build/
+dist/

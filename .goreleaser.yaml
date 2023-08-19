@@ -1,0 +1,61 @@
+project_name: breaklist
+
+builds:
+  - 
+    id: webserver
+    binary: "{{.Os}}-{{.Arch}}/webserver"
+    dir: ./backend
+    no_unique_dist_dir: true
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - darwin
+      - linux
+      - windows
+    goarch:
+      - amd64
+      - arm64
+      - arm
+      - 386
+  - 
+    id: reportGenerator
+    binary: "{{.Os}}-{{.Arch}}/reportGenerator"
+    dir: ./reportGenerator
+    no_unique_dist_dir: true
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - darwin
+      - linux
+      - windows
+    goarch:
+      - amd64
+      - arm64
+      - arm
+      - 386
+
+archives:
+  - format: tar.gz
+    strip_parent_binary_folder: true
+    # this name template makes the OS and Arch compatible with the results of uname.
+    name_template: >-
+      {{ .ProjectName }}_{{ .Tag }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end }}
+    # use zip for windows archives
+    format_overrides:
+    - goos: windows
+      format: zip
+      
+    files:
+      - src: build/template.html
+        strip_parent: true
+      - src: build/.env.example
+        strip_parent: true
+      - src: build/weathercodes
+        dst: "weathercodes"
+      - src: "build/static"
+        dst: "static"

@@ -59,12 +59,11 @@ func getWeatherForecast() []weatherForecast {
 	defer res.Body.Close()
 	body, _ := io.ReadAll(res.Body)
 	responseStr := string(body)
+	// log.Info(responseStr)
 
 	var weatherData weatherResponse
 	err = json.Unmarshal([]byte(responseStr), &weatherData)
 	check(err)
-
-	// log.Info(weatherData)
 
 	intvl := weatherData.Data.Timelines[0].Intervals
 

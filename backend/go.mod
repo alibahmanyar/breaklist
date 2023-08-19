@@ -4,6 +4,7 @@ go 1.21
 
 require (
 	github.com/gofiber/fiber/v2 v2.48.0
+	github.com/joho/godotenv v1.5.1
 	golang.org/x/exp v0.0.0-20230801115018-d63ba01acd4b
 )
 

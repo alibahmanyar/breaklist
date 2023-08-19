@@ -6,9 +6,11 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"strconv"
 	"strings"
 	"time"
+	_ "time/tzdata"
 
 	"github.com/joho/godotenv"
 )
@@ -155,7 +157,14 @@ func main() {
 	f.Close()
 	check(err)
 
-	cmd := exec.Command("sh", "-c", "wkhtmltopdf --encoding utf-8 --margin-top 1mm --margin-bottom 7mm --margin-left 0mm --margin-right 0mm --page-height 500mm --page-width 47mm --grayscale --enable-local-file-access \"temp.html\" \"breaklist.pdf\"")
+	var cmd *exec.Cmd
+	switch runtime.GOOS {
+	case "windows":
+		cmd = exec.Command(".\\wkhtmltopdf.exe", "--encoding", "utf-8", "--margin-top", "1mm", "--margin-bottom", "7mm", "--margin-left", "0mm", "--margin-right",
+			"0mm", "--page-height", "500mm", "--page-width", "47mm", "--grayscale", "--enable-local-file-access", "temp.html", "breaklist.pdf")
+	default: //Mac & Linux
+		cmd = exec.Command("sh", "-c", "wkhtmltopdf --encoding utf-8 --margin-top 1mm --margin-bottom 7mm --margin-left 0mm --margin-right 0mm --page-height 500mm --page-width 47mm --grayscale --enable-local-file-access \"temp.html\" \"breaklist.pdf\"")
+	}
 	_, err = cmd.Output()
 	check(err)
 
