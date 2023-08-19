@@ -14,14 +14,14 @@ There's also a friendly web app to help with managing tasks hassle-free.
 
 <details>
 <summary>Web App Visuals</summary>
-![](./docs/images/m1.png)
-![](./docs/images/m2.png)
-![](./docs/images/m3.png)
+  <img alt="" src="https://github.com/alibahmanyar/breaklist/blob/main/docs/images/m1.png" style="width:33%"/>
+  <img alt="" src="https://github.com/alibahmanyar/breaklist/blob/main/docs/images/m2.png" style="width:33%"/>
+  <img alt="" src="https://github.com/alibahmanyar/breaklist/blob/main/docs/images/m3.png" style="width:33%"/>
 </details>
 
 <details>
 <summary>Complete Report Example</summary>
-![](./docs/images/1.jpg)
+  <img alt="" src="https://github.com/alibahmanyar/breaklist/blob/main/docs/images/1.jpg"/>
 </details>
 
 ## Features
