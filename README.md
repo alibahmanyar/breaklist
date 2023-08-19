@@ -1,22 +1,36 @@
 # Breaklist - A morning report generator for thermal printers
 ![](./docs/images/2.jpg)
 
-Breaklist is a set of tools for generating a morning report on a thermal printer. The morning report includes:
+Breaklist is a toolkit that generates personalized morning reports, designed for thermal printers. The compact summary provides you with all your to-dos, reminders, weather forecast, and the hottest Hacker News highlights fitting snuggly on a dainty, receipt-like paper.
+
+The morning report currently includes:
 
 - A task list 
 - Reminders
 - Weather forecast
 - Summary of latest top articles on Hacker News
 
-The project also features a user-friendly web application that facilitates task management.
+There's also a friendly web app to help with managing tasks hassle-free.
+
+<details>
+<summary>Web App Visuals</summary>
+![](./docs/images/m1.png)
+![](./docs/images/m2.png)
+![](./docs/images/m3.png)
+</details>
+
+<details>
+<summary>Complete Report Example</summary>
+![](./docs/images/1.jpg)
+</details>
 
 ## Features
 
 - Tasks are stored in a `tasks.list` file in plain text format
+- A web app provides an interface for managing tasks
 - Reminders are stored in a `reminders.list` file using crontab format
 - The weather forecast is retrieved from [Tomorrow.io](https://docs.tomorrow.io/reference/welcome)'s API (requires API key)
 - Hacker News summaries are powered by [polyrabbit's hacker-news-digest](https://github.com/polyrabbit/hacker-news-digest)
-- A web app provides an interface for managing tasks
 - The morning report is generated as a PDF using [wkhtmltopdf](https://github.com/wkhtmltopdf/wkhtmltopdf)
 
 ## Getting started
@@ -28,9 +42,8 @@ The project also features a user-friendly web application that facilitates task 
 
 ### Installation
 To use Breaklist, you can either download the latest release from the GitHub releases page or build it from source:
-### Downloding latest release
-Download the most recent release from the following link:
-https://github.com/alibahmanyar/breaklist/releases/latest
+
+### [Downloding latest release](https://github.com/alibahmanyar/breaklist/releases/latest)
 
 ### Building from source
 ```sh
