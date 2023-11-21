@@ -5,6 +5,7 @@ go 1.21
 require (
 	github.com/gocolly/colly v1.2.0
 	github.com/joho/godotenv v1.5.1
+	github.com/yaa110/go-persian-calendar v1.1.5
 )
 
 require (

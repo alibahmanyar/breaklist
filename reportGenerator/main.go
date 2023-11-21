@@ -12,10 +12,14 @@ import (
 	"time"
 	_ "time/tzdata"
 
+	ptime "github.com/yaa110/go-persian-calendar"
+
 	"github.com/joho/godotenv"
 )
 
 type PageData struct {
+	Pdate      string
+	Gdate      string
 	TasksRems  []string
 	Forecast   []weatherForecast
 	HNArticles []hnArticle
@@ -150,10 +154,14 @@ func main() {
 	// Get HN articles
 	articles := getHNArticles()[:8]
 
+	// Current date/time
+	pd := ptime.Now().Format("yyyy/MM/dd")
+	gd := time.Now().Format("2006/01/02")
+
 	// Rendering the HTML template
 	tmpl, _ := template.ParseFiles("template.html")
 	f, _ := os.Create("temp.html")
-	err = tmpl.Execute(f, PageData{TasksRems: append(tasks, reminders...), Forecast: forecast, HNArticles: articles})
+	err = tmpl.Execute(f, PageData{Pdate: pd, Gdate: gd, TasksRems: append(tasks, reminders...), Forecast: forecast, HNArticles: articles})
 	f.Close()
 	check(err)
 
