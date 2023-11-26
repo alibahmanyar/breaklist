@@ -21,4 +21,4 @@ build/reportGenerator: ./reportGenerator/*
 	cp ./reportGenerator/.env.example build/.env.example
 
 build/static: ./frontend/breaklist/src/* ./frontend/breaklist/src/routes/* ./frontend/breaklist/static/* ./frontend/breaklist/*
-	cd ./frontend/breaklist; npm run build; cp -r ./build/ ../../build/static/
+	cd ./frontend/breaklist; npm run build; cp -r ./build ../../build/static/

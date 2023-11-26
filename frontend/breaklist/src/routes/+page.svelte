@@ -15,6 +15,21 @@
 	let addTaskPopUp = false,
 		delTaskPopUp = false;
 
+	function getCookie(cookieName: string) {
+		const name = `${cookieName}=`;
+		const decodedCookie = decodeURIComponent(document.cookie);
+		const cookieArray = decodedCookie.split(';');
+
+		for (let i = 0; i < cookieArray.length; i++) {
+			let cookie = cookieArray[i].trim();
+			if (cookie.indexOf(name) === 0) {
+				return cookie.substring(name.length, cookie.length);
+			}
+    }
+
+    return null;
+}
+
 	async function updateTasks() {
 		state = 0;
 		let response = await fetch(API_URL + 'task');
@@ -25,7 +40,7 @@
 	}
 	onMount(updateTasks);
 	onMount(() => {
-		darkMode = JSON.parse(document.cookie).darkMode;
+		darkMode = getCookie("darkMode") == 'true';
 		if (darkMode) window.document.body.classList.remove('light-mode');
 		else window.document.body.classList.add('light-mode');
 	});
@@ -36,8 +51,7 @@
 
 	function toggleDarkMode() {
 		darkMode = !darkMode;
-
-		document.cookie = JSON.stringify({ darkMode: darkMode });
+		document.cookie = `darkMode=${darkMode};`
 
 		if (darkMode) window.document.body.classList.remove('light-mode');
 		else window.document.body.classList.add('light-mode');
