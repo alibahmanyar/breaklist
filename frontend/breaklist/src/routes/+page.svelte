@@ -4,7 +4,7 @@
 	const { MODE } = import.meta.env;
 
 	const DEV_URL = 'http://localhost:3030/api/';
-	const PROD_URL = '/api/';
+	const PROD_URL = 'api/';
 	const API_URL = MODE === 'development' ? DEV_URL : PROD_URL;
 
 	let darkMode = true;
