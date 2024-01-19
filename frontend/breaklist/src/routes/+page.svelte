@@ -51,7 +51,10 @@
 
 	function toggleDarkMode() {
 		darkMode = !darkMode;
-		document.cookie = `darkMode=${darkMode};`
+
+		let exdate=new Date();
+   		exdate.setDate(exdate.getDate() + 380);
+		document.cookie = `darkMode=${darkMode};expires=${exdate.toUTCString()};`
 
 		if (darkMode) window.document.body.classList.remove('light-mode');
 		else window.document.body.classList.add('light-mode');
