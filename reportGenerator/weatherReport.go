@@ -59,7 +59,7 @@ func getWeatherForecast() []weatherForecast {
 	defer res.Body.Close()
 	body, _ := io.ReadAll(res.Body)
 	responseStr := string(body)
-	// log.Info(responseStr)
+	// fmt.Println(responseStr)
 
 	var weatherData weatherResponse
 	err = json.Unmarshal([]byte(responseStr), &weatherData)

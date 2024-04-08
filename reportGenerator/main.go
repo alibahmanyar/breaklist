@@ -10,6 +10,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"fmt"
+	"runtime/debug"
 	_ "time/tzdata"
 
 	ptime "github.com/yaa110/go-persian-calendar"
@@ -27,6 +29,7 @@ type PageData struct {
 
 func check(e error) {
 	if e != nil {
+		fmt.Println(string(debug.Stack()))
 		log.Fatal(e)
 		panic(e)
 	}
